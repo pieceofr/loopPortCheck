@@ -24,16 +24,18 @@ const (
 func main() {
 	var host = flag.String("host", "127.0.0.1", "enter the host ip for examine the node")
 	var port = flag.String("port", "2136", "enter the host port for examine the node")
-	var serveronly = flag.Bool("server", false, "Server only mode")
+	var mode = flag.Int("mode", 0, "Mode 0:client+server 1:server only 2:client only")
 
 	flag.Parse()
 	log.Println("Detecting host port = ", *host, ":", *port)
-	go pingPongServer(*port)
 
-	if !*serveronly {
-		go CheckPortReachableRoutine(*host, *port)
+	if *mode == 0 || *mode == 1 {
+		go pingPongServer(*port)
 	}
 
+	if *mode == 0 || *mode == 2 {
+		go CheckPortReachableRoutine(*host, *port)
+	}
 	for {
 		fmt.Println("Ping Pong Result: ", peerPortReachable)
 		time.Sleep(5 * time.Second)
