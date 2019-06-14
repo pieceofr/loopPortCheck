@@ -38,7 +38,9 @@ func main() {
 		go CheckPortReachableRoutine(*host, *port)
 	}
 	for {
-		log.Println("Ping Pong Result: ", peerPortReachable)
+		if *mode == 0 || *mode == 2 {
+			log.Println("Ping Pong Result: ", peerPortReachable)
+		}
 		time.Sleep(5 * time.Second)
 	}
 
